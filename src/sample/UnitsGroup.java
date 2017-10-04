@@ -5,13 +5,24 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
-class RadioButtonsGroup {
+class UnitsGroup {
+    RadioGroupByUnit group1, group2;
+    String type;
+
+    UnitsGroup(String _type, RadioChoices[] choices1, RadioChoices[] choices2) {
+        type = _type;
+        group1 = new RadioGroupByUnit(choices1);
+        group2 = new RadioGroupByUnit(choices2);
+    }
+}
+
+class RadioGroupByUnit {
     HBox hBox;
     RadioButton[] radioButtons;
     Label[] labels;
     ToggleGroup toggleGroup;
 
-    RadioButtonsGroup(RadioChoices[] choices) {
+    RadioGroupByUnit(RadioChoices[] choices) {
         hBox = new HBox();
         radioButtons = new RadioButton[choices.length];
         labels = new Label[choices.length];
@@ -24,6 +35,7 @@ class RadioButtonsGroup {
         }
         radioButtons[0].setSelected(true);
         toggleGroup.getToggles().addAll(radioButtons);
+
     }
 }
 
