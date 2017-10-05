@@ -15,7 +15,7 @@ public class Logics {
 
     void behaviors() {
         Vars.AccuracySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Vars.AccuracyTextField.setText("" + newValue.intValue());
+            Vars.AccuracyTextField.setText("" + (double)newValue.intValue());
             try {
                 Vars.accuracy = Integer.parseInt(Vars.AccuracyTextField.getText());
                 ApplyConversionUnit(true);
