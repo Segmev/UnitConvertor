@@ -15,6 +15,9 @@ public class Logics {
     void behaviors() {
         Vars.AccuracySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Vars.AccuracyTextField.setText("" + newValue.intValue());
+            try {
+                Vars.accuracy = Integer.parseInt(Vars.AccuracyTextField.getText());
+            } catch (Exception e) { }
         });
 
         Vars.ConversionTypeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -45,6 +48,7 @@ public class Logics {
         Vars.AccuracyTextField.setOnAction((ActionEvent event) -> {
             try {
                 int val = Integer.parseInt(Vars.AccuracyTextField.getText());
+                Vars.accuracy = val;
                 Vars.AccuracySlider.setValue(val * 1.0);
                 Vars.AccuracyTextField.positionCaret(100);
             } catch (NumberFormatException e) {
@@ -81,7 +85,7 @@ public class Logics {
                 }
             }
             val *= (Vars.actualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
-            Vars.ImperialTextField.setText("" + val);
+            Vars.ImperialTextField.setText("" + applyAccuracy(val));
         } catch (Exception e) {
 
         }
@@ -107,9 +111,20 @@ public class Logics {
                 }
             }
             val /= (Vars.actualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
-            Vars.MetricTextField.setText("" + val);
+            Vars.MetricTextField.setText("" + applyAccuracy(val));
         } catch (Exception e) {
 
         }
+    }
+
+    String applyAccuracy(double entry) {
+        for (int i = 0; i < Vars.accuracy; i++) {
+            entry *= 10;
+        }
+        entry = Math.round(entry);
+        for (int i = 0; i < Vars.accuracy; i++) {
+            entry /= 10;
+        }
+        return (String.format("%." + Vars.accuracy + "f", entry));
     }
 }

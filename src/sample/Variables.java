@@ -129,4 +129,6 @@ class Variables {
     UnitsGroup unitsGroup[], actualGroup;
 
     GridPane gridPane;
+
+    int accuracy;
 }
