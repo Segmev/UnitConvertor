@@ -38,8 +38,7 @@ public class Logics {
                 Vars.gridPane.add(selectedGroup.group1.hBox, 1, 2, 1, 1);
                 Vars.gridPane.add(selectedGroup.group2.hBox, 3, 2, 1, 1);
 
-                Vars.AccuracySlider.setMin(selectedGroup.minAccuracy);
-                Vars.AccuracySlider.setMax(selectedGroup.maxAccuracy);
+                selectedGroup.setDefault();
 
                 Vars.actualGroup = selectedGroup;
             }
@@ -62,6 +61,14 @@ public class Logics {
 
         Vars.ImperialTextField.setOnAction((ActionEvent event) -> {
             fromImperialConversion();
+        });
+
+        Vars.ConvertBtn.setOnAction((ActionEvent event) -> {
+
+        });
+
+        Vars.ClearBtn.setOnAction((ActionEvent event) -> {
+            Vars.actualGroup.setDefault();
         });
     }
 
@@ -127,4 +134,6 @@ public class Logics {
         }
         return (String.format("%." + Vars.accuracy + "f", entry));
     }
+
+
 }

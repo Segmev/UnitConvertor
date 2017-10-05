@@ -24,6 +24,9 @@ class Variables {
 
         AccuracySlider = new Slider();
 
+        ConvertBtn = new Button("Convert");
+        ClearBtn = new Button("Clear");
+
         initAndSetRadioButtonsGroups();
         setProperties();
         setValues();
@@ -38,8 +41,10 @@ class Variables {
                 "Mass",
         };
 
-        double accuracy[][] = {
-                { 0, 6 }, { 0, 5 },
+        double defaultDoubleVals[][] = {
+                /* Defaults: Imperial value, accuracy, radio metric, radio imperial, min accuracy, max accuracy  */
+                {1  , 4, 2, 0, 0, 6},
+                {0.5, 3, 1, 1, 0, 5},
         };
 
         RadioChoices[][][] choices = {
@@ -70,13 +75,14 @@ class Variables {
         };
 
         for (int i = 0; i < choices.length; i++) {
-            if (i < types.length && i < accuracy.length) {
-                unitsGroup[i] = new UnitsGroup(types[i], choices[i][0], choices[i][1], accuracy[i][0], accuracy[i][1]);
+            if (i < types.length && i < defaultDoubleVals.length) {
+                unitsGroup[i] = new UnitsGroup(this, types[i], choices[i][0], choices[i][1], defaultDoubleVals[i]);
                 ConversionTypeBox.getItems().add(types[i]);
             }
         }
         ConversionTypeBox.getSelectionModel().selectFirst();
         actualGroup = unitsGroup[0];
+        actualGroup.setDefault();
     }
 
     private void setProperties() {
@@ -115,6 +121,10 @@ class Variables {
         gridPane.add(AccuracyLabel, 0, 3, 1, 1);
         gridPane.add(AccuracySlider,1,3,1,1);
         gridPane.add(AccuracyTextField, 3, 3,1,1);
+
+        // 4
+
+        gridPane.add(ClearBtn, 1, 4, 1, 1);
     }
 
     BorderPane rootPane;
@@ -129,6 +139,8 @@ class Variables {
     UnitsGroup unitsGroup[], actualGroup;
 
     GridPane gridPane;
+
+    Button ConvertBtn, ClearBtn;
 
     int accuracy;
 }
