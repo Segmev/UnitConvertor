@@ -46,8 +46,8 @@ class Variables {
                 {
                         {
                                 new RadioChoices("m", 1.0),
-                                new RadioChoices("cm", 0.1),
-                                new RadioChoices("mm", 0.01),
+                                new RadioChoices("cm", 0.01),
+                                new RadioChoices("mm", 0.001),
                         },
                         {
                                 new RadioChoices("in", 1 / 0.0254),
@@ -76,6 +76,7 @@ class Variables {
             }
         }
         ConversionTypeBox.getSelectionModel().selectFirst();
+        actualGroup = unitsGroup[0];
     }
 
     private void setProperties() {
@@ -125,7 +126,7 @@ class Variables {
 
     Slider AccuracySlider;
 
-    UnitsGroup unitsGroup[];
+    UnitsGroup unitsGroup[], actualGroup;
 
     GridPane gridPane;
 }

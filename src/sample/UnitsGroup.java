@@ -22,19 +22,18 @@ class UnitsGroup {
 class RadioGroupByUnit {
     HBox hBox;
     RadioButton[] radioButtons;
-    Label[] labels;
+    RadioChoices[] choices;
     ToggleGroup toggleGroup;
 
-    RadioGroupByUnit(RadioChoices[] choices) {
+    RadioGroupByUnit(RadioChoices[] _choices) {
+        choices = _choices;
         hBox = new HBox();
         radioButtons = new RadioButton[choices.length];
-        labels = new Label[choices.length];
         toggleGroup = new ToggleGroup();
 
         for (int i = 0; i < choices.length; i++) {
-            radioButtons[i] = new RadioButton();
-            labels[i] = new Label(choices[i].name);
-            hBox.getChildren().addAll(radioButtons[i], labels[i]);
+            radioButtons[i] = new RadioButton(choices[i].name);
+            hBox.getChildren().addAll(radioButtons[i]);
         }
         radioButtons[0].setSelected(true);
         toggleGroup.getToggles().addAll(radioButtons);

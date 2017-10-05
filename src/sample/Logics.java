@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.RadioButton;
 
 public class Logics {
 
@@ -36,6 +37,8 @@ public class Logics {
 
                 Vars.AccuracySlider.setMin(selectedGroup.minAccuracy);
                 Vars.AccuracySlider.setMax(selectedGroup.maxAccuracy);
+
+                Vars.actualGroup = selectedGroup;
             }
         });
 
@@ -46,6 +49,32 @@ public class Logics {
                 Vars.AccuracyTextField.positionCaret(100);
             } catch (NumberFormatException e) {
                 Vars.AccuracySlider.setValue(0.0);
+            }
+        });
+
+        Vars.MetricTextField.setOnAction((ActionEvent event) -> {
+            try {
+                double val = Double.parseDouble(Vars.MetricTextField.getText());
+                double startConvFactor = 1, endConvFactor = 1;
+
+                String radioMSelected = ((RadioButton)Vars.actualGroup.group1.toggleGroup.getSelectedToggle()).getText();
+                String radioISelected = ((RadioButton)Vars.actualGroup.group2.toggleGroup.getSelectedToggle()).getText();
+
+                for (int i = 1; i < Vars.actualGroup.group1.choices.length; i++) {
+                    if (radioMSelected.equals(Vars.actualGroup.group1.choices[i].name)) {
+                        startConvFactor = Vars.actualGroup.group1.choices[i].value;
+                    }
+                }
+
+                for (int i = 1; i < Vars.actualGroup.group2.choices.length; i++) {
+                    if (radioISelected.equals(Vars.actualGroup.group2.choices[i].name)) {
+                        endConvFactor = Vars.actualGroup.group2.choices[i].value;
+                    }
+                }
+                val *= (Vars.actualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
+                Vars.ImperialTextField.setText("" + val);
+            } catch (Exception e) {
+
             }
         });
     }
