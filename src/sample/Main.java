@@ -11,12 +11,14 @@ public class Main extends Application {
         Vars = new Variables();
         Vars.init();
         Logics = new Logics(Vars);
+        Logics.fromImperialConversion();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(Vars.rootPane, 500, 140));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

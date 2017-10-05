@@ -42,6 +42,7 @@ public class Logics {
                 selectedGroup.setDefault();
 
                 Vars.actualGroup = selectedGroup;
+                fromImperialConversion();
             }
         });
 
