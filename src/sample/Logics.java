@@ -18,7 +18,7 @@ public class Logics {
             Vars.AccuracyTextField.setText("" + newValue.intValue());
             try {
                 Vars.accuracy = Integer.parseInt(Vars.AccuracyTextField.getText());
-                ApplyConversionUnit();
+                ApplyConversionUnit(true);
             } catch (Exception e) { }
         });
 
@@ -43,7 +43,7 @@ public class Logics {
                 selectedGroup.setDefault();
 
                 Vars.ActualGroup = selectedGroup;
-                ApplyConversionUnit();
+                ApplyConversionUnit(false);
             }
         });
 
@@ -64,34 +64,39 @@ public class Logics {
         });
 
         Vars.MetricTextField.setOnAction((ActionEvent event) -> {
-            ApplyConversionUnit();
+            ApplyConversionUnit(true);
         });
 
         Vars.ImperialTextField.setOnAction((ActionEvent event) -> {
-            ApplyConversionUnit();
+            ApplyConversionUnit(true);
         });
 
         Vars.ConvertBtn.setOnAction((ActionEvent event) -> {
-            ApplyConversionUnit();
+            ApplyConversionUnit(true);
         });
 
         Vars.ClearBtn.setOnAction((ActionEvent event) -> {
             Vars.ActualGroup.setDefault();
         });
 
+        Vars.ClearHistoryBtn.setOnAction((ActionEvent) -> {
+            Vars.historyList.getItems().clear();
+            Vars.historyEntries.clear();
+        });
+
         for (int i = 0; i < Vars.UnitsGroup.length; i++) {
             if (Vars.UnitsGroup[i] != null) {
                 Vars.UnitsGroup[i].group1.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                    ApplyConversionUnit()
+                    ApplyConversionUnit(true)
                 );
                 Vars.UnitsGroup[i].group2.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                    ApplyConversionUnit()
+                    ApplyConversionUnit(true)
                 );
             }
         }
     }
 
-    private void fromMetricConversion() {
+    private boolean fromMetricConversion() {
         try {
             String entry = Vars.MetricTextField.getText().replaceAll(",", ".");
             double val = Double.parseDouble(entry);
@@ -113,14 +118,16 @@ public class Logics {
             }
             val *= (Vars.ActualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
             Vars.ImperialTextField.setText("" + applyAccuracy(val));
+            return true;
         } catch (Exception e) {
             Vars.ImperialTextField.setText("");
             Vars.MetricTextField.setText("Enter a valid number");
             Vars.MetricTextField.selectAll();
+            return false;
         }
     }
 
-    void fromImperialConversion() {
+    private boolean fromImperialConversion() {
         try {
             String entry = Vars.ImperialTextField.getText().replaceAll(",", ".");
             double val = Double.parseDouble(entry);
@@ -142,10 +149,12 @@ public class Logics {
             }
             val /= (Vars.ActualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
             Vars.MetricTextField.setText("" + applyAccuracy(val));
+            return true;
         } catch (Exception e) {
             Vars.MetricTextField.setText("");
             Vars.ImperialTextField.setText("Enter a valid number");
             Vars.ImperialTextField.selectAll();
+            return false;
         }
     }
 
@@ -160,16 +169,21 @@ public class Logics {
         return (String.format("%." + Vars.accuracy + "f", entry));
     }
 
-    void ApplyConversionUnit() {
+    void ApplyConversionUnit(boolean updateHistory) {
+        boolean resultOk;
         if (Vars.actualConversionUnit.equals("Metric")) {
-            fromMetricConversion();
+            resultOk = fromMetricConversion();
         } else {
-            fromImperialConversion();
+            resultOk = fromImperialConversion();
+        }
+        if (resultOk && updateHistory) {
+            AddEntryToHistory();
         }
     }
 
     void ChangeConversionUnit() {
         TextField editableField, displayField;
+        
         if (Vars.actualConversionUnit.equals("Metric")) {
             editableField = Vars.MetricTextField;
             displayField = Vars.ImperialTextField;
@@ -184,5 +198,24 @@ public class Logics {
         editableField.setEditable(true);
         editableField.setStyle("-fx-opacity: 1;");
         editableField.promptTextProperty().setValue("Enter a valid number.");
+    }
+
+    private void AddEntryToHistory() {
+        Vars.historyEntries.add(0,
+                Vars.MetricTextField.getText()
+                        + " "
+                        + ((RadioButton) Vars.ActualGroup.group1.toggleGroup.getSelectedToggle()).getText()
+                        + " <-> "
+                        + Vars.ImperialTextField.getText()
+                        + " "
+                        + ((RadioButton) Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText()
+        );
+
+        if (Vars.historyEntries.size() > 5) {
+            Vars.historyEntries.remove(5);
+        }
+
+        Vars.historyList.getItems().clear();
+        Vars.historyList.getItems().addAll(Vars.historyEntries);
     }
 }

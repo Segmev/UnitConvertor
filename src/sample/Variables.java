@@ -5,6 +5,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 class Variables {
 
     void init() {
@@ -29,8 +31,12 @@ class Variables {
 
         ConvertBtn = new Button("Convert");
         ClearBtn = new Button("Clear");
+        ClearHistoryBtn = new Button("Clear History");
 
         actualConversionUnit = "Imperial";
+
+        historyEntries = new ArrayList<>();
+        historyList = new ListView<>();
 
         initAndSetRadioButtonsGroups();
         setProperties();
@@ -133,9 +139,12 @@ class Variables {
         gridPane.add(AccuracyTextField, 3, 3,1,1);
 
         // 4
-
         gridPane.add(ConvertBtn,0,4,1,1);
         gridPane.add(ClearBtn, 1, 4, 1, 1);
+        gridPane.add(ClearHistoryBtn, 2,4,1,1);
+
+        // 5
+        gridPane.add(historyList, 5, 0, 1, 5);
     }
 
     BorderPane rootPane;
@@ -151,10 +160,13 @@ class Variables {
 
     GridPane gridPane;
 
-    Button ConvertBtn, ClearBtn;
+    Button ConvertBtn, ClearBtn, ClearHistoryBtn;
 
     ComboBox<String> UnitTypeConversion;
 
     int accuracy;
     String actualConversionUnit;
+
+    ArrayList<String> historyEntries;
+    ListView<String> historyList;
 }

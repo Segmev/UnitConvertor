@@ -12,13 +12,13 @@ public class Main extends Application {
         Vars.init();
         Logics = new Logics(Vars);
         Logics.ChangeConversionUnit();
-        Logics.ApplyConversionUnit();
+        Logics.ApplyConversionUnit(false);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(Vars.rootPane, 500, 140));
+        primaryStage.setScene(new Scene(Vars.rootPane, 800, 140));
         primaryStage.setResizable(false);
         primaryStage.show();
     }

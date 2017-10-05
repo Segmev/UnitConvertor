@@ -35,7 +35,11 @@ class UnitsGroup {
         Vars.AccuracyTextField.setText("" + defaultAccuracy);
         Vars.accuracy = (int)defaultAccuracy;
 
-        Vars.MetricTextField.setText("");
+        if (Vars.actualConversionUnit.equals("Metric"))
+            Vars.MetricTextField.setText("" + 0);
+        else
+            Vars.MetricTextField.setText("");
+
         Vars.ImperialTextField.setText("" + imperialDefaultVal);
     }
 }
