@@ -22,10 +22,15 @@ class Variables {
 
         ConversionTypeBox = new ComboBox<>();
 
+        UnitTypeLabel = new Label("From ");
+        UnitTypeConversion = new ComboBox<>();
+
         AccuracySlider = new Slider();
 
         ConvertBtn = new Button("Convert");
         ClearBtn = new Button("Clear");
+
+        actualConversionUnit = "Imperial";
 
         initAndSetRadioButtonsGroups();
         setProperties();
@@ -34,7 +39,7 @@ class Variables {
     }
 
     private void initAndSetRadioButtonsGroups() {
-        unitsGroup = new UnitsGroup[4];
+        UnitsGroup = new UnitsGroup[4];
 
         String types[] = {
                 "Length",
@@ -43,8 +48,8 @@ class Variables {
 
         double defaultDoubleVals[][] = {
                 /* Defaults: Imperial value, accuracy, radio metric, radio imperial, min accuracy, max accuracy  */
-                {1  , 4, 2, 0, 0, 6},
-                {0.5, 3, 1, 1, 0, 5},
+                { 1.0, 4, 2, 0, 0, 6 },
+                { 0.5, 3, 1, 1, 0, 5 },
         };
 
         RadioChoices[][][] choices = {
@@ -76,27 +81,30 @@ class Variables {
 
         for (int i = 0; i < choices.length; i++) {
             if (i < types.length && i < defaultDoubleVals.length) {
-                unitsGroup[i] = new UnitsGroup(this, types[i], choices[i][0], choices[i][1], defaultDoubleVals[i]);
+                UnitsGroup[i] = new UnitsGroup(this, types[i], choices[i][0], choices[i][1], defaultDoubleVals[i]);
                 ConversionTypeBox.getItems().add(types[i]);
             }
         }
         ConversionTypeBox.getSelectionModel().selectFirst();
-        actualGroup = unitsGroup[0];
-        actualGroup.setDefault();
+        ActualGroup = UnitsGroup[0];
+        ActualGroup.setDefault();
     }
 
     private void setProperties() {
-        AccuracySlider.setMin(unitsGroup[0].minAccuracy);
-        AccuracySlider.setMax(unitsGroup[0].maxAccuracy);
+        AccuracySlider.setMin(UnitsGroup[0].minAccuracy);
+        AccuracySlider.setMax(UnitsGroup[0].maxAccuracy);
         AccuracySlider.setShowTickMarks(true);
         AccuracySlider.setShowTickLabels(true);
         AccuracySlider.setMajorTickUnit(1);
         AccuracySlider.setBlockIncrement(1);
-
     }
 
     private void setValues() {
-
+        String Units[] = {
+                "Imperial", "Metric"
+        };
+        UnitTypeConversion.getItems().addAll(Units);
+        UnitTypeConversion.getSelectionModel().selectFirst();
     }
 
     private void setLayout() {
@@ -105,6 +113,8 @@ class Variables {
         // 0
         gridPane.add(ConvTypeLabel, 0, 0, 1, 1);
         gridPane.add(ConversionTypeBox, 1, 0, 1, 1);
+        gridPane.add(UnitTypeLabel, 2, 0, 1, 1);
+        gridPane.add(UnitTypeConversion, 3, 0, 1, 1);
 
         // 1
 
@@ -114,8 +124,8 @@ class Variables {
         gridPane.add(ImperialTextField, 3, 1, 1,1);
 
         // 2
-        gridPane.add(unitsGroup[0].group1.hBox, 1, 2, 1,1);
-        gridPane.add(unitsGroup[0].group2.hBox, 3, 2, 1,1);
+        gridPane.add(UnitsGroup[0].group1.hBox, 1, 2, 1,1);
+        gridPane.add(UnitsGroup[0].group2.hBox, 3, 2, 1,1);
 
         // 3
         gridPane.add(AccuracyLabel, 0, 3, 1, 1);
@@ -129,7 +139,7 @@ class Variables {
     }
 
     BorderPane rootPane;
-    private Label ConvTypeLabel, ImperialLabel, MetricLabel, AccuracyLabel;
+    private Label ConvTypeLabel, ImperialLabel, MetricLabel, AccuracyLabel, UnitTypeLabel;
 
     TextField ImperialTextField, MetricTextField, AccuracyTextField;
 
@@ -137,11 +147,14 @@ class Variables {
 
     Slider AccuracySlider;
 
-    UnitsGroup unitsGroup[], actualGroup;
+    UnitsGroup UnitsGroup[], ActualGroup;
 
     GridPane gridPane;
 
     Button ConvertBtn, ClearBtn;
 
+    ComboBox<String> UnitTypeConversion;
+
     int accuracy;
+    String actualConversionUnit;
 }

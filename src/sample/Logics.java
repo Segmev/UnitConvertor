@@ -2,6 +2,7 @@ package sample;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 
 public class Logics {
 
@@ -17,7 +18,7 @@ public class Logics {
             Vars.AccuracyTextField.setText("" + newValue.intValue());
             try {
                 Vars.accuracy = Integer.parseInt(Vars.AccuracyTextField.getText());
-                fromImperialConversion();
+                ApplyConversionUnit();
             } catch (Exception e) { }
         });
 
@@ -25,12 +26,12 @@ public class Logics {
             UnitsGroup selectedGroup = null;
             UnitsGroup oldGroup = null;
 
-            for (int i = 0; i < Vars.unitsGroup.length; i++) {
-                if (Vars.unitsGroup[i] != null) {
-                    if (newValue.equals(Vars.unitsGroup[i].type)) {
-                        selectedGroup = Vars.unitsGroup[i];
-                    } else if (oldValue.equals(Vars.unitsGroup[i].type)) {
-                        oldGroup = Vars.unitsGroup[i];
+            for (int i = 0; i < Vars.UnitsGroup.length; i++) {
+                if (Vars.UnitsGroup[i] != null) {
+                    if (newValue.equals(Vars.UnitsGroup[i].type)) {
+                        selectedGroup = Vars.UnitsGroup[i];
+                    } else if (oldValue.equals(Vars.UnitsGroup[i].type)) {
+                        oldGroup = Vars.UnitsGroup[i];
                     }
                 }
             }
@@ -41,9 +42,14 @@ public class Logics {
 
                 selectedGroup.setDefault();
 
-                Vars.actualGroup = selectedGroup;
-                fromImperialConversion();
+                Vars.ActualGroup = selectedGroup;
+                ApplyConversionUnit();
             }
+        });
+
+        Vars.UnitTypeConversion.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Vars.actualConversionUnit = newValue;
+            ChangeConversionUnit();
         });
 
         Vars.AccuracyTextField.setOnAction((ActionEvent event) -> {
@@ -58,87 +64,92 @@ public class Logics {
         });
 
         Vars.MetricTextField.setOnAction((ActionEvent event) -> {
-            fromMetricConversion();
+            ApplyConversionUnit();
         });
 
         Vars.ImperialTextField.setOnAction((ActionEvent event) -> {
-            fromImperialConversion();
+            ApplyConversionUnit();
         });
 
         Vars.ConvertBtn.setOnAction((ActionEvent event) -> {
-            fromImperialConversion();
+            ApplyConversionUnit();
         });
 
         Vars.ClearBtn.setOnAction((ActionEvent event) -> {
-            Vars.actualGroup.setDefault();
+            Vars.ActualGroup.setDefault();
         });
 
-        for (int i = 0; i < Vars.unitsGroup.length; i++) {
-            if (Vars.unitsGroup[i] != null) {
-                Vars.unitsGroup[i].group1.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                    fromImperialConversion()
+        for (int i = 0; i < Vars.UnitsGroup.length; i++) {
+            if (Vars.UnitsGroup[i] != null) {
+                Vars.UnitsGroup[i].group1.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
+                    ApplyConversionUnit()
                 );
-                Vars.unitsGroup[i].group2.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                    fromImperialConversion()
+                Vars.UnitsGroup[i].group2.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
+                    ApplyConversionUnit()
                 );
             }
         }
     }
 
-    void fromMetricConversion() {
+    private void fromMetricConversion() {
         try {
-            double val = Double.parseDouble(Vars.MetricTextField.getText());
+            String entry = Vars.MetricTextField.getText().replaceAll(",", ".");
+            double val = Double.parseDouble(entry);
             double startConvFactor = 1, endConvFactor = 1;
 
-            String radioMSelected = ((RadioButton)Vars.actualGroup.group1.toggleGroup.getSelectedToggle()).getText();
-            String radioISelected = ((RadioButton)Vars.actualGroup.group2.toggleGroup.getSelectedToggle()).getText();
+            String radioMSelected = ((RadioButton)Vars.ActualGroup.group1.toggleGroup.getSelectedToggle()).getText();
+            String radioISelected = ((RadioButton)Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText();
 
-            for (int i = 1; i < Vars.actualGroup.group1.choices.length; i++) {
-                if (radioMSelected.equals(Vars.actualGroup.group1.choices[i].name)) {
-                    startConvFactor = Vars.actualGroup.group1.choices[i].value;
+            for (int i = 1; i < Vars.ActualGroup.group1.choices.length; i++) {
+                if (radioMSelected.equals(Vars.ActualGroup.group1.choices[i].name)) {
+                    startConvFactor = Vars.ActualGroup.group1.choices[i].value;
                 }
             }
 
-            for (int i = 1; i < Vars.actualGroup.group2.choices.length; i++) {
-                if (radioISelected.equals(Vars.actualGroup.group2.choices[i].name)) {
-                    endConvFactor = Vars.actualGroup.group2.choices[i].value;
+            for (int i = 1; i < Vars.ActualGroup.group2.choices.length; i++) {
+                if (radioISelected.equals(Vars.ActualGroup.group2.choices[i].name)) {
+                    endConvFactor = Vars.ActualGroup.group2.choices[i].value;
                 }
             }
-            val *= (Vars.actualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
+            val *= (Vars.ActualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
             Vars.ImperialTextField.setText("" + applyAccuracy(val));
         } catch (Exception e) {
-
+            Vars.ImperialTextField.setText("");
+            Vars.MetricTextField.setText("Enter a valid number");
+            Vars.MetricTextField.selectAll();
         }
     }
 
     void fromImperialConversion() {
         try {
-            double val = Double.parseDouble(Vars.ImperialTextField.getText());
+            String entry = Vars.ImperialTextField.getText().replaceAll(",", ".");
+            double val = Double.parseDouble(entry);
             double startConvFactor = 1, endConvFactor = 1;
 
-            String radioMSelected = ((RadioButton)Vars.actualGroup.group1.toggleGroup.getSelectedToggle()).getText();
-            String radioISelected = ((RadioButton)Vars.actualGroup.group2.toggleGroup.getSelectedToggle()).getText();
+            String radioMSelected = ((RadioButton)Vars.ActualGroup.group1.toggleGroup.getSelectedToggle()).getText();
+            String radioISelected = ((RadioButton)Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText();
 
-            for (int i = 1; i < Vars.actualGroup.group1.choices.length; i++) {
-                if (radioMSelected.equals(Vars.actualGroup.group1.choices[i].name)) {
-                    startConvFactor = Vars.actualGroup.group1.choices[i].value;
+            for (int i = 1; i < Vars.ActualGroup.group1.choices.length; i++) {
+                if (radioMSelected.equals(Vars.ActualGroup.group1.choices[i].name)) {
+                    startConvFactor = Vars.ActualGroup.group1.choices[i].value;
                 }
             }
 
-            for (int i = 1; i < Vars.actualGroup.group2.choices.length; i++) {
-                if (radioISelected.equals(Vars.actualGroup.group2.choices[i].name)) {
-                    endConvFactor = Vars.actualGroup.group2.choices[i].value;
+            for (int i = 1; i < Vars.ActualGroup.group2.choices.length; i++) {
+                if (radioISelected.equals(Vars.ActualGroup.group2.choices[i].name)) {
+                    endConvFactor = Vars.ActualGroup.group2.choices[i].value;
                 }
             }
-            val /= (Vars.actualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
+            val /= (Vars.ActualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
             Vars.MetricTextField.setText("" + applyAccuracy(val));
         } catch (Exception e) {
             Vars.MetricTextField.setText("");
             Vars.ImperialTextField.setText("Enter a valid number");
+            Vars.ImperialTextField.selectAll();
         }
     }
 
-    String applyAccuracy(double entry) {
+    private String applyAccuracy(double entry) {
         for (int i = 0; i < Vars.accuracy; i++) {
             entry *= 10;
         }
@@ -149,5 +160,29 @@ public class Logics {
         return (String.format("%." + Vars.accuracy + "f", entry));
     }
 
+    void ApplyConversionUnit() {
+        if (Vars.actualConversionUnit.equals("Metric")) {
+            fromMetricConversion();
+        } else {
+            fromImperialConversion();
+        }
+    }
 
+    void ChangeConversionUnit() {
+        TextField editableField, displayField;
+        if (Vars.actualConversionUnit.equals("Metric")) {
+            editableField = Vars.MetricTextField;
+            displayField = Vars.ImperialTextField;
+        } else {
+            editableField = Vars.ImperialTextField;
+            displayField = Vars.MetricTextField;
+        }
+        displayField.setEditable(false);
+        displayField.setStyle("-fx-opacity: 0.75;");
+        displayField.promptTextProperty().setValue("");
+
+        editableField.setEditable(true);
+        editableField.setStyle("-fx-opacity: 1;");
+        editableField.promptTextProperty().setValue("Enter a valid number.");
+    }
 }

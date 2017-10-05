@@ -11,7 +11,8 @@ public class Main extends Application {
         Vars = new Variables();
         Vars.init();
         Logics = new Logics(Vars);
-        Logics.fromImperialConversion();
+        Logics.ChangeConversionUnit();
+        Logics.ApplyConversionUnit();
     }
 
     @Override
