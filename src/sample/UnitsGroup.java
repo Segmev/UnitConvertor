@@ -33,6 +33,7 @@ class UnitsGroup {
         Vars.AccuracySlider.setMax(maxAccuracy);
         Vars.AccuracySlider.setValue(defaultAccuracy);
         Vars.AccuracyTextField.setText("" + defaultAccuracy);
+        Vars.accuracy = (int)defaultAccuracy;
 
         Vars.MetricTextField.setText("");
         Vars.ImperialTextField.setText("" + imperialDefaultVal);

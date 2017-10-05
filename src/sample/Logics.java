@@ -17,6 +17,7 @@ public class Logics {
             Vars.AccuracyTextField.setText("" + newValue.intValue());
             try {
                 Vars.accuracy = Integer.parseInt(Vars.AccuracyTextField.getText());
+                fromImperialConversion();
             } catch (Exception e) { }
         });
 
@@ -70,6 +71,17 @@ public class Logics {
         Vars.ClearBtn.setOnAction((ActionEvent event) -> {
             Vars.actualGroup.setDefault();
         });
+
+        for (int i = 0; i < Vars.unitsGroup.length; i++) {
+            if (Vars.unitsGroup[i] != null) {
+                Vars.unitsGroup[i].group1.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
+                    fromImperialConversion()
+                );
+                Vars.unitsGroup[i].group2.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
+                    fromImperialConversion()
+                );
+            }
+        }
     }
 
     void fromMetricConversion() {
@@ -120,7 +132,8 @@ public class Logics {
             val /= (Vars.actualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
             Vars.MetricTextField.setText("" + applyAccuracy(val));
         } catch (Exception e) {
-
+            Vars.MetricTextField.setText("");
+            Vars.ImperialTextField.setText("Enter a valid number");
         }
     }
 
