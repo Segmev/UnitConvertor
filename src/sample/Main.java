@@ -10,6 +10,7 @@ public class Main extends Application {
     public void init() {
         Vars = new Variables();
         Vars.init();
+        Logics = new Logics(Vars);
     }
 
     @Override
@@ -20,6 +21,7 @@ public class Main extends Application {
     }
 
     private Variables Vars;
+    private Logics Logics;
     public static void main(String[] args) {
         launch(args);
     }

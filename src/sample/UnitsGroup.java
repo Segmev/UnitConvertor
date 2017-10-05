@@ -8,11 +8,14 @@ import javafx.scene.layout.HBox;
 class UnitsGroup {
     RadioGroupByUnit group1, group2;
     String type;
+    double minAccuracy, maxAccuracy;
 
-    UnitsGroup(String _type, RadioChoices[] choices1, RadioChoices[] choices2) {
+    UnitsGroup(String _type, RadioChoices[] choices1, RadioChoices[] choices2, double minAcc, double maxAcc) {
         type = _type;
         group1 = new RadioGroupByUnit(choices1);
         group2 = new RadioGroupByUnit(choices2);
+        minAccuracy = minAcc;
+        maxAccuracy = maxAcc;
     }
 }
 

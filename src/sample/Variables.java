@@ -38,6 +38,10 @@ class Variables {
                 "Mass",
         };
 
+        double accuracy[][] = {
+                { 0, 6 }, { 0, 5 },
+        };
+
         RadioChoices[][][] choices = {
                 {
                         {
@@ -66,8 +70,8 @@ class Variables {
         };
 
         for (int i = 0; i < choices.length; i++) {
-            if (i < types.length) {
-                unitsGroup[i] = new UnitsGroup(types[i], choices[i][0], choices[i][1]);
+            if (i < types.length && i < accuracy.length) {
+                unitsGroup[i] = new UnitsGroup(types[i], choices[i][0], choices[i][1], accuracy[i][0], accuracy[i][1]);
                 ConversionTypeBox.getItems().add(types[i]);
             }
         }
@@ -75,8 +79,8 @@ class Variables {
     }
 
     private void setProperties() {
-        AccuracySlider.setMin(0);
-        AccuracySlider.setMax(6);
+        AccuracySlider.setMin(unitsGroup[0].minAccuracy);
+        AccuracySlider.setMax(unitsGroup[0].maxAccuracy);
         AccuracySlider.setShowTickMarks(true);
         AccuracySlider.setShowTickLabels(true);
         AccuracySlider.setMajorTickUnit(1);
@@ -123,5 +127,5 @@ class Variables {
 
     UnitsGroup unitsGroup[];
 
-    private GridPane gridPane;
+    GridPane gridPane;
 }
