@@ -64,7 +64,7 @@ public class Logics {
         });
 
         Vars.ConvertBtn.setOnAction((ActionEvent event) -> {
-
+            fromImperialConversion();
         });
 
         Vars.ClearBtn.setOnAction((ActionEvent event) -> {

@@ -124,6 +124,7 @@ class Variables {
 
         // 4
 
+        gridPane.add(ConvertBtn,0,4,1,1);
         gridPane.add(ClearBtn, 1, 4, 1, 1);
     }
 
