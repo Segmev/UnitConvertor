@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 class Variables {
 
     void init() {
+        width = 820;
+        height = 185;
         rootPane = new BorderPane();
         gridPane = new GridPane();
 
@@ -97,6 +100,9 @@ class Variables {
     }
 
     private void setProperties() {
+        gridPane.setHgap(5);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(3, 3, 1, 3));
         AccuracySlider.setMin(UnitsGroup[0].minAccuracy);
         AccuracySlider.setMax(UnitsGroup[0].maxAccuracy);
         AccuracySlider.setShowTickMarks(true);
@@ -143,7 +149,7 @@ class Variables {
         gridPane.add(ClearBtn, 1, 4, 1, 1);
         gridPane.add(ClearHistoryBtn, 2,4,1,1);
 
-        // 5
+        // history column
         gridPane.add(historyList, 5, 0, 1, 5);
     }
 
@@ -169,4 +175,5 @@ class Variables {
 
     ArrayList<String> historyEntries;
     ListView<String> historyList;
+    int height, width;
 }

@@ -183,7 +183,7 @@ public class Logics {
 
     void ChangeConversionUnit() {
         TextField editableField, displayField;
-        
+
         if (Vars.actualConversionUnit.equals("Metric")) {
             editableField = Vars.MetricTextField;
             displayField = Vars.ImperialTextField;
@@ -211,8 +211,8 @@ public class Logics {
                         + ((RadioButton) Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText()
         );
 
-        if (Vars.historyEntries.size() > 5) {
-            Vars.historyEntries.remove(5);
+        if (Vars.historyEntries.size() >= Vars.height / 25) {
+            Vars.historyEntries.remove(Vars.height / 25);
         }
 
         Vars.historyList.getItems().clear();
