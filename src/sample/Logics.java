@@ -17,9 +17,13 @@ public class Logics {
         Vars.AccuracySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Vars.AccuracyTextField.setText("" + (double)newValue.intValue());
             try {
-                Vars.accuracy = Integer.parseInt(Vars.AccuracyTextField.getText());
-                ApplyConversionUnit(true);
-            } catch (Exception e) { }
+                int newAccuracy = (int)Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
+                if (newAccuracy != Vars.accuracy) {
+                    ApplyConversionUnit(true);
+                    Vars.accuracy = newAccuracy;
+                }
+            } catch (Exception e) {
+            }
         });
 
         Vars.ConversionTypeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -211,7 +215,7 @@ public class Logics {
                         + ((RadioButton) Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText()
         );
 
-        if (Vars.historyEntries.size() >= Vars.height / 25) {
+        if (Vars.historyEntries.size() >= Vars.height / 25 + 1) {
             Vars.historyEntries.remove(Vars.height / 25);
         }
 
