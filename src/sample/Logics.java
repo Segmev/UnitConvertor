@@ -22,8 +22,7 @@ public class Logics {
                     ApplyConversionUnit(true);
                     Vars.accuracy = newAccuracy;
                 }
-            } catch (Exception e) {
-            }
+            } catch (Exception e) { }
         });
 
         Vars.ConversionTypeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -215,8 +214,8 @@ public class Logics {
                         + ((RadioButton) Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText()
         );
 
-        if (Vars.historyEntries.size() >= Vars.height / 25 + 1) {
-            Vars.historyEntries.remove(Vars.height / 25);
+        if (Vars.historyEntries.size() >= 25) {
+            Vars.historyEntries.remove(25 - 1);
         }
 
         Vars.historyList.getItems().clear();

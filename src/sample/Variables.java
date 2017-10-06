@@ -3,43 +3,38 @@ package sample;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
 import java.util.ArrayList;
 
 class Variables {
 
     void init() {
-        width = 820;
+        width = 850;
         height = 185;
         rootPane = new BorderPane();
         gridPane = new GridPane();
-
         ConvTypeLabel = new Label("Conversion Type");
         ImperialLabel = new Label("Imperial");
         MetricLabel = new Label("Metric");
         AccuracyLabel = new Label("Accuracy");
-
         ImperialTextField = new TextField();
         MetricTextField = new TextField();
         AccuracyTextField = new TextField();
-
         ConversionTypeBox = new ComboBox<>();
-
         UnitTypeLabel = new Label("From ");
         UnitTypeConversion = new ComboBox<>();
-
         AccuracySlider = new Slider();
-
+        historyEntries = new ArrayList<>();
+        historyList = new ListView<>();
         ConvertBtn = new Button("Convert");
         ClearBtn = new Button("Clear");
         ClearHistoryBtn = new Button("Clear History");
+        SpaceGrow = new Pane();
+        BtnsHbox = new HBox();
 
         actualConversionUnit = "Imperial";
 
-        historyEntries = new ArrayList<>();
-        historyList = new ListView<>();
 
         initAndSetRadioButtonsGroups();
         setProperties();
@@ -100,6 +95,14 @@ class Variables {
     }
 
     private void setProperties() {
+        ConvertBtn.setMinSize(Button.USE_PREF_SIZE, Button.USE_PREF_SIZE);
+        ClearBtn.setMinSize(Button.USE_PREF_SIZE, Button.USE_PREF_SIZE);
+        ClearHistoryBtn.setMinSize(Button.USE_PREF_SIZE, Button.USE_PREF_SIZE);
+        HBox.getHgrow(SpaceGrow);
+        SpaceGrow.setMinSize(130, 1);
+        BtnsHbox.getChildren().addAll(ClearBtn, ClearHistoryBtn, SpaceGrow, ConvertBtn);
+        BtnsHbox.setPadding(new Insets(6, 10, 5, 0));
+        ConvertBtn.setStyle("-fx-border-color: forestgreen");
         gridPane.setHgap(5);
         gridPane.setVgap(10);
         gridPane.setPadding(new Insets(3, 3, 1, 3));
@@ -109,6 +112,7 @@ class Variables {
         AccuracySlider.setShowTickLabels(true);
         AccuracySlider.setMajorTickUnit(1);
         AccuracySlider.setBlockIncrement(1);
+        BtnsHbox.setSpacing(15);
     }
 
     private void setValues() {
@@ -142,15 +146,12 @@ class Variables {
         // 3
         gridPane.add(AccuracyLabel, 0, 3, 1, 1);
         gridPane.add(AccuracySlider,1,3,1,1);
-        gridPane.add(AccuracyTextField, 3, 3,1,1);
+        gridPane.add(AccuracyTextField, 2, 3,1,1);
+        gridPane.add(BtnsHbox, 3, 3, 2, 1);
 
-        // 4
-        gridPane.add(ConvertBtn,0,4,1,1);
-        gridPane.add(ClearBtn, 1, 4, 1, 1);
-        gridPane.add(ClearHistoryBtn, 2,4,1,1);
 
         // history column
-        gridPane.add(historyList, 5, 0, 1, 5);
+        gridPane.add(historyList, 4, 0, 2, 3);
     }
 
     BorderPane rootPane;
@@ -166,6 +167,8 @@ class Variables {
 
     GridPane gridPane;
 
+    HBox BtnsHbox;
+    Pane SpaceGrow;
     Button ConvertBtn, ClearBtn, ClearHistoryBtn;
 
     ComboBox<String> UnitTypeConversion;
