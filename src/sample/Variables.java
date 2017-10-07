@@ -48,12 +48,14 @@ class Variables {
         String types[] = {
                 "Length",
                 "Mass",
+                "Temperature"
         };
 
         double defaultDoubleVals[][] = {
                 /* Defaults: Imperial value, accuracy, radio metric, radio imperial, min accuracy, max accuracy  */
                 { 1.0, 4, 2, 0, 0, 6 },
                 { 0.5, 3, 1, 1, 0, 5 },
+                {  32, 1, 0, 0, 0, 3}
         };
 
         RadioChoices[][][] choices = {
@@ -80,6 +82,14 @@ class Variables {
                                 new RadioChoices("lb", 16.0),
                                 new RadioChoices("stone", 224.0),
                         },
+                },
+                {
+                        {
+                            new RadioChoices("Celsius", 1.0)
+                        },
+                        {
+                            new RadioChoices("Fahrenheit", 1.8, 32.0)
+                        }
                 }
         };
 

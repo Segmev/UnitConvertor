@@ -59,7 +59,7 @@ class RadioGroupByUnit {
         this.defaultChoice = (int)defaultChoice;
 
         for (int i = 0; i < choices.length; i++) {
-            radioButtons[i] = new RadioButton(choices[i].name);
+            radioButtons[i] = new RadioButton(choices[i].unit);
             hBox.getChildren().addAll(radioButtons[i]);
         }
         toggleGroup.getToggles().addAll(radioButtons);
@@ -72,11 +72,18 @@ class RadioGroupByUnit {
 }
 
 class RadioChoices {
-    String name;
-    Double value;
+    String unit;
+    Double value, baseDifference;
 
-    RadioChoices(String _name, Double _value) {
-        name = _name;
-        value = _value;
+    RadioChoices(String unit, Double val, Double baseDifference) {
+        this.unit = unit;
+        this.value = val;
+        this.baseDifference = baseDifference;
+    }
+
+    RadioChoices(String unit, Double val) {
+        this.unit = unit;
+        this.value = val;
+        this.baseDifference = 0.0;
     }
 }

@@ -19,8 +19,8 @@ public class Logics {
             try {
                 int newAccuracy = (int)Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
                 if (newAccuracy != Vars.accuracy) {
-                    ApplyConversionUnit(true);
                     Vars.accuracy = newAccuracy;
+                    ApplyConversionUnit(true);
                 }
             } catch (Exception e) { }
         });
@@ -109,17 +109,20 @@ public class Logics {
             String radioISelected = ((RadioButton)Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText();
 
             for (int i = 1; i < Vars.ActualGroup.group1.choices.length; i++) {
-                if (radioMSelected.equals(Vars.ActualGroup.group1.choices[i].name)) {
+                if (radioMSelected.equals(Vars.ActualGroup.group1.choices[i].unit)) {
                     startConvFactor = Vars.ActualGroup.group1.choices[i].value;
+                    break ;
                 }
             }
 
             for (int i = 1; i < Vars.ActualGroup.group2.choices.length; i++) {
-                if (radioISelected.equals(Vars.ActualGroup.group2.choices[i].name)) {
+                if (radioISelected.equals(Vars.ActualGroup.group2.choices[i].unit)) {
                     endConvFactor = Vars.ActualGroup.group2.choices[i].value;
+                    break ;
                 }
             }
             val *= (Vars.ActualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
+            val += Vars.ActualGroup.group2.choices[0].baseDifference;
             Vars.ImperialTextField.setText("" + applyAccuracy(val));
             return true;
         } catch (Exception e) {
@@ -140,16 +143,19 @@ public class Logics {
             String radioISelected = ((RadioButton)Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText();
 
             for (int i = 1; i < Vars.ActualGroup.group1.choices.length; i++) {
-                if (radioMSelected.equals(Vars.ActualGroup.group1.choices[i].name)) {
+                if (radioMSelected.equals(Vars.ActualGroup.group1.choices[i].unit)) {
                     startConvFactor = Vars.ActualGroup.group1.choices[i].value;
+                    break ;
                 }
             }
 
             for (int i = 1; i < Vars.ActualGroup.group2.choices.length; i++) {
-                if (radioISelected.equals(Vars.ActualGroup.group2.choices[i].name)) {
+                if (radioISelected.equals(Vars.ActualGroup.group2.choices[i].unit)) {
                     endConvFactor = Vars.ActualGroup.group2.choices[i].value;
+                    break ;
                 }
             }
+            val -= Vars.ActualGroup.group2.choices[0].baseDifference;
             val /= (Vars.ActualGroup.group2.choices[0].value * startConvFactor) / endConvFactor;
             Vars.MetricTextField.setText("" + applyAccuracy(val));
             return true;
