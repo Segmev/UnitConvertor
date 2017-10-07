@@ -201,7 +201,7 @@ public class Logics {
             displayField = Vars.MetricTextField;
         }
         displayField.setEditable(false);
-        displayField.setStyle("-fx-opacity: 0.75;");
+        displayField.setStyle("-fx-opacity: 0.65;");
         displayField.promptTextProperty().setValue("");
 
         editableField.setEditable(true);
