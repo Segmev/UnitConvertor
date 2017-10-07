@@ -2,8 +2,10 @@ package sample;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
@@ -94,9 +96,8 @@ class Variables {
                 ),
         };
 
-        for (int i = 0; i < UnitsGroup.length; i++) {
-            if (UnitsGroup[i] != null)
-            ConversionTypeBox.getItems().add(UnitsGroup[i].type);
+        for (UnitsGroup unit: UnitsGroup) {
+            ConversionTypeBox.getItems().add(unit.type);
         }
         ConversionTypeBox.getSelectionModel().selectFirst();
         ActualGroup = UnitsGroup[0];
@@ -176,8 +177,8 @@ class Variables {
 
     GridPane gridPane;
 
-    HBox BtnsHbox;
-    Pane SpaceGrow;
+    private HBox BtnsHbox;
+    private Pane SpaceGrow;
     Button ConvertBtn, ClearBtn, ClearHistoryBtn;
 
     ComboBox<String> UnitTypeConversion;
