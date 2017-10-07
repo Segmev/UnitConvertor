@@ -4,25 +4,23 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 
-public class Logics {
+class Logics {
 
-    Variables Vars;
+    private Variables Vars;
 
     Logics(Variables _variables) {
         Vars = _variables;
         behaviors();
     }
 
-    void behaviors() {
+    private void behaviors() {
         Vars.AccuracySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             Vars.AccuracyTextField.setText("" + (double)newValue.intValue());
-            try {
-                int newAccuracy = (int)Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
-                if (newAccuracy != Vars.accuracy) {
-                    Vars.accuracy = newAccuracy;
-                    ApplyConversionUnit(true);
-                }
-            } catch (Exception e) { }
+            int newAccuracy = (int)Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
+            if (newAccuracy != Vars.accuracy) {
+                Vars.accuracy = newAccuracy;
+                ApplyConversionUnit(true);
+            }
         });
 
         Vars.AccuracyTextField.setOnAction((ActionEvent event) -> {
@@ -50,9 +48,9 @@ public class Logics {
                 }
             }
             if (selectedGroup != null && oldGroup != null) {
-                Vars.gridPane.getChildren().removeAll(oldGroup.group1.hBox, oldGroup.group2.hBox);
-                Vars.gridPane.add(selectedGroup.group1.hBox, 1, 2, 1, 1);
-                Vars.gridPane.add(selectedGroup.group2.hBox, 3, 2, 1, 1);
+                Vars.GridPane.getChildren().removeAll(oldGroup.group1.hBox, oldGroup.group2.hBox);
+                Vars.GridPane.add(selectedGroup.group1.hBox, 1, 2, 1, 1);
+                Vars.GridPane.add(selectedGroup.group2.hBox, 3, 2, 1, 1);
 
                 selectedGroup.setDefault();
 
@@ -62,25 +60,25 @@ public class Logics {
         });
 
         Vars.UnitTypeConversion.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Vars.actualConversionUnit = newValue;
+            Vars.ActualConversionUnit = newValue;
             ChangeConversionUnit();
         });
 
-        Vars.MetricTextField.setOnAction((ActionEvent event) -> {
-            ApplyConversionUnit(true);
-        });
+        Vars.MetricTextField.setOnAction((ActionEvent event) ->
+            ApplyConversionUnit(true)
+        );
 
-        Vars.ImperialTextField.setOnAction((ActionEvent event) -> {
-            ApplyConversionUnit(true);
-        });
+        Vars.ImperialTextField.setOnAction((ActionEvent event) ->
+            ApplyConversionUnit(true)
+        );
 
-        Vars.ConvertBtn.setOnAction((ActionEvent event) -> {
-            ApplyConversionUnit(true);
-        });
+        Vars.ConvertBtn.setOnAction((ActionEvent event) ->
+            ApplyConversionUnit(true)
+        );
 
-        Vars.ClearBtn.setOnAction((ActionEvent event) -> {
-            Vars.ActualGroup.setDefault();
-        });
+        Vars.ClearBtn.setOnAction((ActionEvent event) ->
+            Vars.ActualGroup.setDefault()
+        );
 
         Vars.ClearHistoryBtn.setOnAction((ActionEvent) -> {
             Vars.historyList.getItems().clear();
@@ -180,7 +178,7 @@ public class Logics {
 
     void ApplyConversionUnit(boolean updateHistory) {
         boolean resultOk;
-        if (Vars.actualConversionUnit.equals("Metric")) {
+        if (Vars.ActualConversionUnit.equals("Metric")) {
             resultOk = fromMetricConversion();
         } else {
             resultOk = fromImperialConversion();
@@ -193,7 +191,7 @@ public class Logics {
     void ChangeConversionUnit() {
         TextField editableField, displayField;
 
-        if (Vars.actualConversionUnit.equals("Metric")) {
+        if (Vars.ActualConversionUnit.equals("Metric")) {
             editableField = Vars.MetricTextField;
             displayField = Vars.ImperialTextField;
         } else {

@@ -5,11 +5,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
 class UnitsGroup {
-    Variables Vars;
+    private Variables Vars;
     RadioGroupByUnit group1, group2;
     String type;
-    double defaultAccuracy, minAccuracy, maxAccuracy;
-    double imperialDefaultVal;
+    private double defaultAccuracy;
+    double minAccuracy, maxAccuracy;
+    private double imperialDefaultVal;
 
     UnitsGroup(Variables _vars, String _type, RadioChoices[] choices1, RadioChoices[] choices2, double defaultsVals[]) {
         Vars = _vars;
@@ -35,7 +36,7 @@ class UnitsGroup {
         Vars.AccuracyTextField.setText("" + defaultAccuracy);
         Vars.accuracy = (int)defaultAccuracy;
 
-        if (Vars.actualConversionUnit.equals("Metric"))
+        if (Vars.ActualConversionUnit.equals("Metric"))
             Vars.MetricTextField.setText("" + 0);
         else
             Vars.MetricTextField.setText("");
@@ -46,10 +47,10 @@ class UnitsGroup {
 
 class RadioGroupByUnit {
     HBox hBox;
-    RadioButton[] radioButtons;
+    private RadioButton[] radioButtons;
     RadioChoices[] choices;
     ToggleGroup toggleGroup;
-    int defaultChoice;
+    private int defaultChoice;
 
     RadioGroupByUnit(RadioChoices[] _choices, double defaultChoice) {
         choices = _choices;

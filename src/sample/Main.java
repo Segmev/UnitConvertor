@@ -17,7 +17,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("Conversion tool by Stéphane Karraz - 2359046");
         primaryStage.setScene(new Scene(Vars.rootPane, Vars.width, Vars.height));
         primaryStage.setResizable(false);
         primaryStage.show();

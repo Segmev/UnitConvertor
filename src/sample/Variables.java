@@ -15,7 +15,7 @@ class Variables {
         width = 850;
         height = 185;
         rootPane = new BorderPane();
-        gridPane = new GridPane();
+        GridPane = new GridPane();
         ConvTypeLabel = new Label("Conversion Type");
         ImperialLabel = new Label("Imperial");
         MetricLabel = new Label("Metric");
@@ -35,8 +35,7 @@ class Variables {
         SpaceGrow = new Pane();
         BtnsHbox = new HBox();
 
-        actualConversionUnit = "Imperial";
-
+        ActualConversionUnit = "Imperial";
 
         initAndSetRadioButtonsGroups();
         setProperties();
@@ -87,10 +86,13 @@ class Variables {
                 new UnitsGroup(this,
                         "Volume",
                         new RadioChoices[] {
-                                new RadioChoices("Litre", 1.0)
+                                new RadioChoices("L", 1.0),
+                                new RadioChoices("mL", 0.001)
                         },
                         new RadioChoices[] {
-                                new RadioChoices("Pint", 1.7598)
+                                new RadioChoices("Pint", 1.7598),
+                                new RadioChoices("Quart", 2.0),
+                                new RadioChoices("Gallon", 8.0),
                         },
                         new double[] { 1, 2, 0, 0, 0, 10 }
                 ),
@@ -109,13 +111,13 @@ class Variables {
         ClearBtn.setMinSize(Button.USE_PREF_SIZE, Button.USE_PREF_SIZE);
         ClearHistoryBtn.setMinSize(Button.USE_PREF_SIZE, Button.USE_PREF_SIZE);
         HBox.getHgrow(SpaceGrow);
-        SpaceGrow.setMinSize(130, 1);
+        SpaceGrow.setMinSize(50, 1);
         BtnsHbox.getChildren().addAll(ClearBtn, ClearHistoryBtn, SpaceGrow, ConvertBtn);
         BtnsHbox.setPadding(new Insets(6, 10, 5, 0));
         ConvertBtn.setStyle("-fx-border-color: forestgreen");
-        gridPane.setHgap(5);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(3, 3, 1, 3));
+        GridPane.setHgap(5);
+        GridPane.setVgap(10);
+        GridPane.setPadding(new Insets(3, 3, 1, 3));
         AccuracySlider.setMin(UnitsGroup[0].minAccuracy);
         AccuracySlider.setMax(UnitsGroup[0].maxAccuracy);
         AccuracySlider.setShowTickMarks(true);
@@ -134,34 +136,34 @@ class Variables {
     }
 
     private void setLayout() {
-        rootPane.setCenter(gridPane);
+        rootPane.setCenter(GridPane);
 
         // 0
-        gridPane.add(ConvTypeLabel, 0, 0, 1, 1);
-        gridPane.add(ConversionTypeBox, 1, 0, 1, 1);
-        gridPane.add(UnitTypeLabel, 2, 0, 1, 1);
-        gridPane.add(UnitTypeConversion, 3, 0, 1, 1);
+        GridPane.add(ConvTypeLabel, 0, 0, 1, 1);
+        GridPane.add(ConversionTypeBox, 1, 0, 1, 1);
+        GridPane.add(UnitTypeLabel, 2, 0, 1, 1);
+        GridPane.add(UnitTypeConversion, 3, 0, 1, 1);
 
         // 1
 
-        gridPane.add(MetricLabel, 0,1,1,1);
-        gridPane.add(MetricTextField, 1, 1, 1,1);
-        gridPane.add(ImperialLabel, 2, 1, 1 ,1);
-        gridPane.add(ImperialTextField, 3, 1, 1,1);
+        GridPane.add(MetricLabel, 0,1,1,1);
+        GridPane.add(MetricTextField, 1, 1, 1,1);
+        GridPane.add(ImperialLabel, 2, 1, 1 ,1);
+        GridPane.add(ImperialTextField, 3, 1, 1,1);
 
         // 2
-        gridPane.add(UnitsGroup[0].group1.hBox, 1, 2, 1,1);
-        gridPane.add(UnitsGroup[0].group2.hBox, 3, 2, 1,1);
+        GridPane.add(UnitsGroup[0].group1.hBox, 1, 2, 1,1);
+        GridPane.add(UnitsGroup[0].group2.hBox, 3, 2, 1,1);
 
         // 3
-        gridPane.add(AccuracyLabel, 0, 3, 1, 1);
-        gridPane.add(AccuracySlider,1,3,1,1);
-        gridPane.add(AccuracyTextField, 2, 3,1,1);
-        gridPane.add(BtnsHbox, 3, 3, 2, 1);
+        GridPane.add(AccuracyLabel, 0, 3, 1, 1);
+        GridPane.add(AccuracySlider,1,3,1,1);
+        GridPane.add(AccuracyTextField, 2, 3,1,1);
+        GridPane.add(BtnsHbox, 3, 3, 2, 1);
 
 
         // history column
-        gridPane.add(historyList, 4, 0, 2, 3);
+        GridPane.add(historyList, 4, 0, 2, 3);
     }
 
     BorderPane rootPane;
@@ -175,7 +177,7 @@ class Variables {
 
     UnitsGroup UnitsGroup[], ActualGroup;
 
-    GridPane gridPane;
+    GridPane GridPane;
 
     private HBox BtnsHbox;
     private Pane SpaceGrow;
@@ -184,7 +186,7 @@ class Variables {
     ComboBox<String> UnitTypeConversion;
 
     int accuracy;
-    String actualConversionUnit;
+    String ActualConversionUnit;
 
     ArrayList<String> historyEntries;
     ListView<String> historyList;
