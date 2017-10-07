@@ -43,72 +43,60 @@ class Variables {
     }
 
     private void initAndSetRadioButtonsGroups() {
-        UnitsGroup = new UnitsGroup[4];
-
-        String types[] = {
-                "Length",
-                "Mass",
-                "Temperature",
-                "Volume"
-        };
-
-        double defaultDoubleVals[][] = {
-                /* Defaults: Imperial value, accuracy, radio metric, radio imperial, min accuracy, max accuracy  */
-                { 1.0, 4, 2, 0, 0, 6 },
-                { 0.5, 3, 1, 1, 0, 5 },
-                {  32, 1, 0, 0, 0, 3 },
-                {  1,  2, 0, 0, 0, 10 }
-        };
-
-        RadioChoices[][][] choices = {
-                {
-                        {
+        UnitsGroup = new UnitsGroup[] {
+                new UnitsGroup(this,
+                        "Length",
+                        new RadioChoices[] {
                                 new RadioChoices("m", 1.0),
                                 new RadioChoices("cm", 0.01),
                                 new RadioChoices("mm", 0.001),
                         },
-                        {
+                        new RadioChoices[] {
                                 new RadioChoices("in", 1 / 0.0254),
                                 new RadioChoices("foot", 12.0),
                                 new RadioChoices("yard", 36.0),
                         },
-                },
-                {
-                        {
+                        new double[] { 1.0, 4, 2, 0, 0, 6 }
+                ),
+                new UnitsGroup(this,
+                        "Mass",
+                        new RadioChoices[] {
                                 new RadioChoices("g", 1.0),
                                 new RadioChoices("kg", 1000.0),
                                 new RadioChoices("ton", 1000000.0),
                         },
-                        {
+                        new RadioChoices[] {
                                 new RadioChoices("oz", 1 / 28.3495),
                                 new RadioChoices("lb", 16.0),
                                 new RadioChoices("stone", 224.0),
                         },
-                },
-                {
-                        {
-                            new RadioChoices("Celsius", 1.0)
+                        new double[] { 0.5, 3, 1, 1, 0, 5 }
+                ),
+                new UnitsGroup(this,
+                        "Temperature",
+                        new RadioChoices[] {
+                                new RadioChoices("Celsius", 1.0)
                         },
-                        {
-                            new RadioChoices("Fahrenheit", 1.8, 32.0)
-                        }
-                },
-                {
-                        {
-                            new RadioChoices("Litre", 1.0)
+                        new RadioChoices[] {
+                                new RadioChoices("Fahrenheit", 1.8, 32.0)
                         },
-                        {
-                            new RadioChoices("Pint", 1.7598)
-                        }
-                }
-
+                        new double[] { 32, 1, 0, 0, 0, 3 }
+                ),
+                new UnitsGroup(this,
+                        "Volume",
+                        new RadioChoices[] {
+                                new RadioChoices("Litre", 1.0)
+                        },
+                        new RadioChoices[] {
+                                new RadioChoices("Pint", 1.7598)
+                        },
+                        new double[] { 1, 2, 0, 0, 0, 10 }
+                ),
         };
 
-        for (int i = 0; i < choices.length; i++) {
-            if (i < types.length && i < defaultDoubleVals.length) {
-                UnitsGroup[i] = new UnitsGroup(this, types[i], choices[i][0], choices[i][1], defaultDoubleVals[i]);
-                ConversionTypeBox.getItems().add(types[i]);
-            }
+        for (int i = 0; i < UnitsGroup.length; i++) {
+            if (UnitsGroup[i] != null)
+            ConversionTypeBox.getItems().add(UnitsGroup[i].type);
         }
         ConversionTypeBox.getSelectionModel().selectFirst();
         ActualGroup = UnitsGroup[0];

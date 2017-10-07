@@ -25,6 +25,17 @@ public class Logics {
             } catch (Exception e) { }
         });
 
+        Vars.AccuracyTextField.setOnAction((ActionEvent event) -> {
+            try {
+                double val = Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
+                Vars.accuracy = (int)val;
+                Vars.AccuracySlider.setValue(val);
+                Vars.AccuracyTextField.positionCaret(100);
+            } catch (NumberFormatException e) {
+                Vars.AccuracySlider.setValue(0.0);
+            }
+        });
+
         Vars.ConversionTypeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             UnitsGroup selectedGroup = null;
             UnitsGroup oldGroup = null;
@@ -53,17 +64,6 @@ public class Logics {
         Vars.UnitTypeConversion.valueProperty().addListener((observable, oldValue, newValue) -> {
             Vars.actualConversionUnit = newValue;
             ChangeConversionUnit();
-        });
-
-        Vars.AccuracyTextField.setOnAction((ActionEvent event) -> {
-            try {
-                int val = Integer.parseInt(Vars.AccuracyTextField.getText());
-                Vars.accuracy = val;
-                Vars.AccuracySlider.setValue(val * 1.0);
-                Vars.AccuracyTextField.positionCaret(100);
-            } catch (NumberFormatException e) {
-                Vars.AccuracySlider.setValue(0.0);
-            }
         });
 
         Vars.MetricTextField.setOnAction((ActionEvent event) -> {
