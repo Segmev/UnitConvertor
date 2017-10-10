@@ -69,6 +69,7 @@ class Logics {
             }
             if (selectedGroup != null && oldGroup != null) {
                 Vars.GridPane.getChildren().removeAll(oldGroup.group1.hBox, oldGroup.group2.hBox);
+
                 Vars.GridPane.add(selectedGroup.group1.hBox, 1, 2, 1, 1);
                 Vars.GridPane.add(selectedGroup.group2.hBox, 3, 2, 1, 1);
 
@@ -76,7 +77,14 @@ class Logics {
 
                 Vars.ActualGroup = selectedGroup;
                 Vars.historyList.getItems().clear();
-                Vars.historyEntries.clear();
+                Vars.actualHistoryEntries = selectedGroup.historyEntries;
+                if (Vars.actualHistoryEntries.size() > 0)
+                    Vars.actualHistoryEntries.remove(0);
+
+                for (HistoryEntry entry : Vars.actualHistoryEntries) {
+                    Vars.historyList.getItems().add(entry);
+                }
+
                 ApplyConversionUnit(false);
             }
         });
@@ -104,7 +112,7 @@ class Logics {
 
         Vars.ClearHistoryBtn.setOnAction((ActionEvent) -> {
             Vars.historyList.getItems().clear();
-            Vars.historyEntries.clear();
+            Vars.actualHistoryEntries.clear();
         });
 
 
@@ -257,7 +265,7 @@ class Logics {
     }
 
     private void AddEntryToHistory() {
-        Vars.historyEntries.add(0,
+        Vars.actualHistoryEntries.add(0,
                 new HistoryEntry(
                         Vars.MetricTextField.getText(),
                         ((RadioButton) Vars.ActualGroup.group1.toggleGroup.getSelectedToggle()).getText(),
@@ -267,12 +275,12 @@ class Logics {
                 )
         );
 
-        if (Vars.historyEntries.size() >= 25) {
-            Vars.historyEntries.remove(25 - 1);
+        if (Vars.actualHistoryEntries.size() >= 25) {
+            Vars.actualHistoryEntries.remove(25 - 1);
         }
 
         Vars.historyList.getItems().clear();
-        for (HistoryEntry entry : Vars.historyEntries) {
+        for (HistoryEntry entry : Vars.actualHistoryEntries) {
             Vars.historyList.getItems().add(entry);
         }
     }

@@ -4,6 +4,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
+import java.util.ArrayList;
+
 class UnitsGroup {
     private Variables Vars;
     RadioGroupByUnit group1, group2;
@@ -11,6 +13,7 @@ class UnitsGroup {
     private double defaultAccuracy;
     double minAccuracy, maxAccuracy;
     private double imperialDefaultVal;
+    ArrayList<HistoryEntry> historyEntries;
 
     UnitsGroup(Variables _vars, String _type, RadioChoices[] choices1, RadioChoices[] choices2, double defaultsVals[]) {
         Vars = _vars;
@@ -24,6 +27,8 @@ class UnitsGroup {
 
         minAccuracy = defaultsVals[4];
         maxAccuracy = defaultsVals[5];
+
+        historyEntries = new ArrayList<>();
     }
 
     void setDefault() {

@@ -27,7 +27,6 @@ class Variables {
         UnitTypeLabel = new Label("From ");
         UnitTypeConversion = new ComboBox<>();
         AccuracySlider = new Slider();
-        historyEntries = new ArrayList<>();
         historyList = new ListView<>();
         historyTutoLabel = new Label("Click on history entry to fill fields.");
         ConvertBtn = new Button("Convert");
@@ -104,6 +103,7 @@ class Variables {
         }
         ConversionTypeBox.getSelectionModel().selectFirst();
         ActualGroup = UnitsGroup[0];
+        actualHistoryEntries = ActualGroup.historyEntries;
         ActualGroup.setDefault();
     }
 
@@ -190,9 +190,9 @@ class Variables {
     int accuracy;
     String ActualConversionUnit;
 
-    ArrayList<HistoryEntry> historyEntries;
+    ArrayList<HistoryEntry> actualHistoryEntries;
     ListView<HistoryEntry> historyList;
-    Label historyTutoLabel;
+    private Label historyTutoLabel;
     int height, width;
 }
 
