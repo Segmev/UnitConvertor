@@ -188,7 +188,25 @@ class Variables {
     int accuracy;
     String ActualConversionUnit;
 
-    ArrayList<String> historyEntries;
-    ListView<String> historyList;
+    ArrayList<HistoryEntry> historyEntries;
+    ListView<HistoryEntry> historyList;
     int height, width;
+}
+
+class HistoryEntry {
+    String metricEntry, metricUnit, imperialEntry, imperialUnit;
+    int accuracy;
+
+    HistoryEntry(String metricEntry, String metricUnit, String imperialEntry, String imperialUnit, int accuracy) {
+        this.metricEntry = metricEntry;
+        this.metricUnit = metricUnit;
+        this.imperialEntry = imperialEntry;
+        this.imperialUnit = imperialUnit;
+        this.accuracy = accuracy;
+    }
+
+    @Override
+    public String toString() {
+        return metricEntry + " " + metricUnit + " <-> " + imperialEntry + " " + imperialUnit;
+    }
 }

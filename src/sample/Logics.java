@@ -1,12 +1,48 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 
 class Logics {
 
     private Variables Vars;
+
+    private final ChangeListener<Toggle> radioBtnListener = (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+            -> ApplyConversionUnit(true);
+
+    private final ChangeListener<Number> accuracySliderListener = (observable, oldValue, newValue) -> {
+        Vars.AccuracyTextField.setText("" + (double)newValue.intValue());
+        int newAccuracy = (int)Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
+        if (newAccuracy != Vars.accuracy) {
+            Vars.accuracy = newAccuracy;
+            ApplyConversionUnit(true);
+        }
+    };
+
+    private final EventHandler<ActionEvent> accuracyFieldListener = (ActionEvent event) -> {
+        try {
+            double val = Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
+            Vars.accuracy = (int)val;
+            if (Vars.accuracy > (int)Vars.AccuracySlider.getMax()) {
+                Vars.accuracy = (int)Vars.AccuracySlider.getMax();
+            } else if (Vars.accuracy < 0) {
+                Vars.accuracy = 0;
+            }
+            Vars.AccuracySlider.setValue(val);
+            Vars.AccuracyTextField.positionCaret(100);
+            ApplyConversionUnit(true);
+        } catch (NumberFormatException e) {
+            Vars.AccuracySlider.setValue(0.0);
+            Vars.accuracy = 0;
+        }
+        Vars.AccuracyTextField.setText("" + (double)Vars.accuracy);
+    };
 
     Logics(Variables _variables) {
         Vars = _variables;
@@ -14,25 +50,9 @@ class Logics {
     }
 
     private void behaviors() {
-        Vars.AccuracySlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Vars.AccuracyTextField.setText("" + (double)newValue.intValue());
-            int newAccuracy = (int)Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
-            if (newAccuracy != Vars.accuracy) {
-                Vars.accuracy = newAccuracy;
-                ApplyConversionUnit(true);
-            }
-        });
+        Vars.AccuracySlider.valueProperty().addListener(accuracySliderListener);
 
-        Vars.AccuracyTextField.setOnAction((ActionEvent event) -> {
-            try {
-                double val = Double.parseDouble(Vars.AccuracyTextField.getText().replaceAll(",", "."));
-                Vars.accuracy = (int)val;
-                Vars.AccuracySlider.setValue(val);
-                Vars.AccuracyTextField.positionCaret(100);
-            } catch (NumberFormatException e) {
-                Vars.AccuracySlider.setValue(0.0);
-            }
-        });
+        Vars.AccuracyTextField.setOnAction(accuracyFieldListener);
 
         Vars.ConversionTypeBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             UnitsGroup selectedGroup = null;
@@ -55,6 +75,8 @@ class Logics {
                 selectedGroup.setDefault();
 
                 Vars.ActualGroup = selectedGroup;
+                Vars.historyList.getItems().clear();
+                Vars.historyEntries.clear();
                 ApplyConversionUnit(false);
             }
         });
@@ -85,16 +107,43 @@ class Logics {
             Vars.historyEntries.clear();
         });
 
+
         for (int i = 0; i < Vars.UnitsGroup.length; i++) {
             if (Vars.UnitsGroup[i] != null) {
-                Vars.UnitsGroup[i].group1.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                    ApplyConversionUnit(true)
-                );
-                Vars.UnitsGroup[i].group2.toggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) ->
-                    ApplyConversionUnit(true)
-                );
+                Vars.UnitsGroup[i].group1.toggleGroup.selectedToggleProperty().addListener(radioBtnListener);
+                Vars.UnitsGroup[i].group2.toggleGroup.selectedToggleProperty().addListener(radioBtnListener);
             }
         }
+
+        Vars.historyList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                for (Toggle toggle : Vars.ActualGroup.group1.toggleGroup.getToggles()) {
+                    if (((RadioButton)toggle).getText().equals(newValue.metricUnit)) {
+                        Vars.ActualGroup.group1.toggleGroup.selectedToggleProperty().removeListener(radioBtnListener);
+                        toggle.setSelected(true);
+                        Vars.ActualGroup.group1.toggleGroup.selectedToggleProperty().addListener(radioBtnListener);
+                    }
+                }
+                for (Toggle toggle : Vars.ActualGroup.group2.toggleGroup.getToggles()) {
+                    if (((RadioButton)toggle).getText().equals(newValue.imperialUnit)) {
+                        Vars.ActualGroup.group2.toggleGroup.selectedToggleProperty().removeListener(radioBtnListener);
+                        toggle.setSelected(true);
+                        Vars.ActualGroup.group2.toggleGroup.selectedToggleProperty().addListener(radioBtnListener);
+                    }
+                }
+                Vars.MetricTextField.setText(newValue.metricEntry);
+                Vars.AccuracyTextField.setOnAction(null);
+                Vars.AccuracySlider.valueProperty().removeListener(accuracySliderListener);
+
+                Vars.ImperialTextField.setText(newValue.imperialEntry);
+                Vars.AccuracySlider.setValue(newValue.accuracy);
+
+                Vars.AccuracyTextField.setOnAction(accuracyFieldListener);
+                Vars.AccuracySlider.valueProperty().addListener(accuracySliderListener);
+
+                Vars.AccuracyTextField.setText("" + (double)newValue.accuracy);
+            }
+        });
     }
 
     private boolean fromMetricConversion() {
@@ -209,13 +258,13 @@ class Logics {
 
     private void AddEntryToHistory() {
         Vars.historyEntries.add(0,
-                Vars.MetricTextField.getText()
-                        + " "
-                        + ((RadioButton) Vars.ActualGroup.group1.toggleGroup.getSelectedToggle()).getText()
-                        + " <-> "
-                        + Vars.ImperialTextField.getText()
-                        + " "
-                        + ((RadioButton) Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText()
+                new HistoryEntry(
+                        Vars.MetricTextField.getText(),
+                        ((RadioButton) Vars.ActualGroup.group1.toggleGroup.getSelectedToggle()).getText(),
+                        Vars.ImperialTextField.getText(),
+                        ((RadioButton) Vars.ActualGroup.group2.toggleGroup.getSelectedToggle()).getText(),
+                        Vars.accuracy
+                )
         );
 
         if (Vars.historyEntries.size() >= 25) {
@@ -223,6 +272,8 @@ class Logics {
         }
 
         Vars.historyList.getItems().clear();
-        Vars.historyList.getItems().addAll(Vars.historyEntries);
+        for (HistoryEntry entry : Vars.historyEntries) {
+            Vars.historyList.getItems().add(entry);
+        }
     }
 }
