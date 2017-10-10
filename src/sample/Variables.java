@@ -29,6 +29,7 @@ class Variables {
         AccuracySlider = new Slider();
         historyEntries = new ArrayList<>();
         historyList = new ListView<>();
+        historyTutoLabel = new Label("Click on history entry to fill fields.");
         ConvertBtn = new Button("Convert");
         ClearBtn = new Button("Clear");
         ClearHistoryBtn = new Button("Clear History");
@@ -163,7 +164,8 @@ class Variables {
 
 
         // history column
-        GridPane.add(historyList, 4, 0, 2, 3);
+        GridPane.add(historyList, 4, 0, 2, 2);
+        GridPane.add(historyTutoLabel,4, 2, 1, 1);
     }
 
     BorderPane rootPane;
@@ -190,6 +192,7 @@ class Variables {
 
     ArrayList<HistoryEntry> historyEntries;
     ListView<HistoryEntry> historyList;
+    Label historyTutoLabel;
     int height, width;
 }
 

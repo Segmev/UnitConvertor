@@ -17,11 +17,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Conversion tool by Stéphane Karraz - 2359046");
+        primaryStage.setTitle("Conversion tool by Stéphane Karraz - 2953046");
         primaryStage.setScene(new Scene(Vars.rootPane, Vars.width, Vars.height));
         primaryStage.setResizable(false);
         primaryStage.show();
     }
+
+    @Override
+    public void stop() { }
 
     private Variables Vars;
     private Logics Logics;

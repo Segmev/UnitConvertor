@@ -7,13 +7,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleGroup;
 
 class Logics {
 
     private Variables Vars;
 
-    private final ChangeListener<Toggle> radioBtnListener = (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
+    private final ChangeListener<Toggle> radioBtnListener
+            = (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue)
             -> ApplyConversionUnit(true);
 
     private final ChangeListener<Number> accuracySliderListener = (observable, oldValue, newValue) -> {
