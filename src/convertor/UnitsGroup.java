@@ -1,4 +1,4 @@
-package sample;
+package convertor;
 
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;

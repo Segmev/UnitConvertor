@@ -1,4 +1,4 @@
-package sample;
+package convertor;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

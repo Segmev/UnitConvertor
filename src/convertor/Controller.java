@@ -1,4 +1,4 @@
-package sample;
+package convertor;
 
 public class Controller {
 
